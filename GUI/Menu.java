@@ -1,29 +1,27 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package GUI;
 
 
+import Negocio.Juego;
+import Negocio.Palabra;
 import java.awt.Image;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 
-/**
- *
- * @author Diego Armando
- */
-public class Menu extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Main
-     */
+public class Menu extends javax.swing.JFrame {
+    Juego juego;
+    
     public Menu() {
         initComponents();
         this.setLocationRelativeTo(null);
         panelJuego.setVisible(false);
         panelResultados.setVisible(false);
         panelVocabulario.setVisible(false);
+        juego = Juego.getInstance();
     }
 
     /**
@@ -43,10 +41,10 @@ public class Menu extends javax.swing.JFrame {
         btnjuego_Menu = new javax.swing.JButton();
         panelVocabulario = new javax.swing.JPanel();
         btnVoca_menu = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        lblImagen = new javax.swing.JLabel();
         lblEspannol = new javax.swing.JLabel();
         lblMaleku = new javax.swing.JLabel();
-        lblAudio = new javax.swing.JButton();
+        btnAudio = new javax.swing.JButton();
         btnDerecha = new javax.swing.JButton();
         btnIzquierda = new javax.swing.JButton();
         panelResultados = new javax.swing.JPanel();
@@ -76,7 +74,7 @@ public class Menu extends javax.swing.JFrame {
                 btnJugarActionPerformed(evt);
             }
         });
-        panelMenu.add(btnJugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(297, 257, 97, 44));
+        panelMenu.add(btnJugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(297, 257, 120, 47));
 
         btnVocabulario.setText("Vocabulario");
         btnVocabulario.addActionListener(new java.awt.event.ActionListener() {
@@ -84,7 +82,7 @@ public class Menu extends javax.swing.JFrame {
                 btnVocabularioActionPerformed(evt);
             }
         });
-        panelMenu.add(btnVocabulario, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 257, 153, 47));
+        panelMenu.add(btnVocabulario, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 257, 154, 47));
 
         lblLogo.setBackground(new java.awt.Color(255, 255, 255));
         lblLogo.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
@@ -129,30 +127,35 @@ public class Menu extends javax.swing.JFrame {
         });
         panelVocabulario.add(btnVoca_menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(444, 286, 75, 35));
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("lblImagen");
-        jLabel1.setToolTipText("");
-        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        panelVocabulario.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 27, 284, 279));
-
-        lblEspannol.setText("Español");
+        lblImagen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblImagen.setToolTipText("");
+        lblImagen.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        panelVocabulario.add(lblImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 27, 284, 279));
         panelVocabulario.add(lblEspannol, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 110, -1, -1));
 
         lblMaleku.setText("Maleku");
         panelVocabulario.add(lblMaleku, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 150, -1, -1));
 
-        lblAudio.setText("AUDIO");
-        lblAudio.setToolTipText("Reproducir audio");
-        lblAudio.addActionListener(new java.awt.event.ActionListener() {
+        btnAudio.setToolTipText("Reproducir audio");
+        btnAudio.setBorderPainted(false);
+        btnAudio.setContentAreaFilled(false);
+        btnAudio.setFocusPainted(false);
+        btnAudio.setMaximumSize(new java.awt.Dimension(10000, 10000));
+        btnAudio.setMinimumSize(new java.awt.Dimension(1, 1));
+        btnAudio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lblAudioActionPerformed(evt);
+                btnAudioActionPerformed(evt);
             }
         });
-        panelVocabulario.add(lblAudio, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 230, -1, -1));
+        panelVocabulario.add(btnAudio, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 230, 70, 70));
 
         btnDerecha.setToolTipText("Continuar con la palabra siguiente");
+        btnDerecha.setBorderPainted(false);
         btnDerecha.setContentAreaFilled(false);
+        btnDerecha.setFocusPainted(false);
         btnDerecha.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        btnDerecha.setMaximumSize(new java.awt.Dimension(1000, 1000));
+        btnDerecha.setMinimumSize(new java.awt.Dimension(1, 1));
         btnDerecha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDerechaActionPerformed(evt);
@@ -169,7 +172,6 @@ public class Menu extends javax.swing.JFrame {
         btnIzquierda.setMargin(new java.awt.Insets(0, 0, 0, 0));
         btnIzquierda.setMaximumSize(new java.awt.Dimension(85, 61));
         btnIzquierda.setMinimumSize(new java.awt.Dimension(85, 61));
-        btnIzquierda.setOpaque(false);
         btnIzquierda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnIzquierdaActionPerformed(evt);
@@ -235,14 +237,18 @@ public class Menu extends javax.swing.JFrame {
     private void btnVocabularioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVocabularioActionPerformed
         panelMenu.setVisible(false);
         panelVocabulario.setVisible(true);
+         
+        btnIzquierda.setIcon(new ImageIcon(juego.recalcularImagen("Imagenes/flecha_izq.png", 85, 61)));
+        btnDerecha.setIcon(new ImageIcon(juego.recalcularImagen("Imagenes/flecha_der.png", 85, 61)));
+        btnAudio.setIcon(new ImageIcon(juego.recalcularImagen("Imagenes/audio.png", 65, 65)));
         
-        Image img = new javax.swing.ImageIcon(getClass().getResource("/Imagenes/flecha_izq.png")).getImage();  
-        Image newimg = img.getScaledInstance( 85, 61,  java.awt.Image.SCALE_SMOOTH ) ;  
-        btnIzquierda.setIcon(new ImageIcon( newimg ));
+        juego.palabraPrimera();
+        btnIzquierda.setVisible(false);
+        Palabra palabraActual = juego.getPalabraActual();
+        lblImagen.setIcon(new ImageIcon(palabraActual.getImagen()));
+        lblEspannol.setText("Español: " + palabraActual.getEspannol());
+        lblMaleku.setText("Maleku: " + palabraActual.getMaleku());
         
-        img = new javax.swing.ImageIcon(getClass().getResource("/Imagenes/flecha_der.png")).getImage();  
-        newimg = img.getScaledInstance( 85, 61,  java.awt.Image.SCALE_SMOOTH ) ;  
-        btnDerecha.setIcon(new ImageIcon( newimg ));
     }//GEN-LAST:event_btnVocabularioActionPerformed
 
     private void btnRetryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetryActionPerformed
@@ -255,16 +261,44 @@ public class Menu extends javax.swing.JFrame {
         panelMenu.setVisible(true);
     }//GEN-LAST:event_btnResults_MenuActionPerformed
 
-    private void lblAudioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lblAudioActionPerformed
-
-    }//GEN-LAST:event_lblAudioActionPerformed
+    private void btnAudioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAudioActionPerformed
+        try {
+            juego.getPalabraActual().playAudio();
+        } catch (UnsupportedAudioFileException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (LineUnavailableException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAudioActionPerformed
 
     private void btnDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDerechaActionPerformed
-
+        juego.palabraSiguiente();
+        btnIzquierda.setVisible(true);
+     
+        if(juego.ultimaPalabra()){
+            btnDerecha.setVisible(false);
+        }
+        Palabra palabraActual = juego.getPalabraActual();
+        lblImagen.setIcon(new ImageIcon(palabraActual.getImagen()));
+        lblEspannol.setText("Español: " + palabraActual.getEspannol());
+        lblMaleku.setText("Maleku: " + palabraActual.getMaleku());
     }//GEN-LAST:event_btnDerechaActionPerformed
 
     private void btnIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzquierdaActionPerformed
-
+        juego.palabraAnterior();
+        btnDerecha.setVisible(true);
+        if(juego.isPrimeraPalabra()){
+            btnIzquierda.setVisible(false);
+        }
+        Palabra palabraActual = juego.getPalabraActual();
+        lblImagen.setIcon(new ImageIcon(palabraActual.getImagen()));
+        lblEspannol.setText("Español: " + palabraActual.getEspannol());
+        lblMaleku.setText("Maleku: " + palabraActual.getMaleku());
+        
     }//GEN-LAST:event_btnIzquierdaActionPerformed
 
     /**
@@ -280,6 +314,7 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAudio;
     private javax.swing.JButton btnDerecha;
     private javax.swing.JButton btnIzquierda;
     private javax.swing.JButton btnJugar;
@@ -288,9 +323,8 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JButton btnVoca_menu;
     private javax.swing.JButton btnVocabulario;
     private javax.swing.JButton btnjuego_Menu;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JButton lblAudio;
     private javax.swing.JLabel lblEspannol;
+    private javax.swing.JLabel lblImagen;
     private javax.swing.JLabel lblIntentosFallidos;
     private javax.swing.JLabel lblLogo;
     private javax.swing.JLabel lblMaleku;

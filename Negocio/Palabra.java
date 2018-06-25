@@ -16,14 +16,19 @@ public class Palabra {
     private AudioInputStream audioInputStream;
     private String audioPath;
     private Image imagen;
+    private String espannol;
+    private String maleku;
 
     
-    public Palabra(String audioPath, Image imagen)throws UnsupportedAudioFileException, IOException, LineUnavailableException{  
+    public Palabra(String espannol, String maleku, String audioPath, Image imagen)throws UnsupportedAudioFileException, IOException, LineUnavailableException{  
+        this.espannol = espannol;
+        this.maleku = maleku;
         //para la imagen 
         this.imagen = imagen;         
         //para el audio
+        ClassLoader classLoader = getClass().getClassLoader();
         this.audioPath = audioPath;
-        audioInputStream = AudioSystem.getAudioInputStream(new File(this.audioPath).getAbsoluteFile());
+        audioInputStream = AudioSystem.getAudioInputStream(new File(classLoader.getResource(this.audioPath).getFile()).getAbsoluteFile());
         audio = AudioSystem.getClip();
         audio.open(audioInputStream); 
     }
@@ -37,7 +42,8 @@ public class Palabra {
         audio.close();
         
         //reinciar
-        audioInputStream = AudioSystem.getAudioInputStream(new File(audioPath).getAbsoluteFile());
+        ClassLoader classLoader = getClass().getClassLoader();
+        audioInputStream = AudioSystem.getAudioInputStream(new File(classLoader.getResource(audioPath).getFile()).getAbsoluteFile());
         audio.open(audioInputStream);
         audio.setMicrosecondPosition(0);
     }
@@ -46,6 +52,14 @@ public class Palabra {
 
     public Image getImagen() {
         return imagen;
+    }
+
+    public String getEspannol() {
+        return espannol;
+    }
+
+    public String getMaleku() {
+        return maleku;
     }
     
     
