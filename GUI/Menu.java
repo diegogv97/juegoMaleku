@@ -11,17 +11,16 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 
-
 public class Menu extends javax.swing.JFrame {
     Juego juego;
     
     public Menu() {
         initComponents();
+        juego = Juego.getInstance();
         this.setLocationRelativeTo(null);
         panelJuego.setVisible(false);
         panelResultados.setVisible(false);
         panelVocabulario.setVisible(false);
-        juego = Juego.getInstance();
     }
 
     /**
@@ -131,10 +130,12 @@ public class Menu extends javax.swing.JFrame {
         lblImagen.setToolTipText("");
         lblImagen.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         panelVocabulario.add(lblImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 27, 284, 279));
-        panelVocabulario.add(lblEspannol, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 110, -1, -1));
 
-        lblMaleku.setText("Maleku");
-        panelVocabulario.add(lblMaleku, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 150, -1, -1));
+        lblEspannol.setFont(new java.awt.Font("Palatino Linotype", 0, 18)); // NOI18N
+        panelVocabulario.add(lblEspannol, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 110, -1, -1));
+
+        lblMaleku.setFont(new java.awt.Font("Palatino Linotype", 0, 18)); // NOI18N
+        panelVocabulario.add(lblMaleku, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 150, -1, -1));
 
         btnAudio.setToolTipText("Reproducir audio");
         btnAudio.setBorderPainted(false);
@@ -147,7 +148,7 @@ public class Menu extends javax.swing.JFrame {
                 btnAudioActionPerformed(evt);
             }
         });
-        panelVocabulario.add(btnAudio, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 230, 70, 70));
+        panelVocabulario.add(btnAudio, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 190, 70, 70));
 
         btnDerecha.setToolTipText("Continuar con la palabra siguiente");
         btnDerecha.setBorderPainted(false);
@@ -237,15 +238,16 @@ public class Menu extends javax.swing.JFrame {
     private void btnVocabularioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVocabularioActionPerformed
         panelMenu.setVisible(false);
         panelVocabulario.setVisible(true);
-         
+        
         btnIzquierda.setIcon(new ImageIcon(juego.recalcularImagen("Imagenes/flecha_izq.png", 85, 61)));
         btnDerecha.setIcon(new ImageIcon(juego.recalcularImagen("Imagenes/flecha_der.png", 85, 61)));
         btnAudio.setIcon(new ImageIcon(juego.recalcularImagen("Imagenes/audio.png", 65, 65)));
         
         juego.palabraPrimera();
-        btnIzquierda.setVisible(false);
+        btnIzquierda.setVisible(false);  
+            
         Palabra palabraActual = juego.getPalabraActual();
-        lblImagen.setIcon(new ImageIcon(palabraActual.getImagen()));
+        lblImagen.setIcon(new ImageIcon(juego.recalcularImagen(palabraActual.getimagePath(), 284, 279)));
         lblEspannol.setText("Español: " + palabraActual.getEspannol());
         lblMaleku.setText("Maleku: " + palabraActual.getMaleku());
         
@@ -283,7 +285,7 @@ public class Menu extends javax.swing.JFrame {
             btnDerecha.setVisible(false);
         }
         Palabra palabraActual = juego.getPalabraActual();
-        lblImagen.setIcon(new ImageIcon(palabraActual.getImagen()));
+        lblImagen.setIcon(new ImageIcon(juego.recalcularImagen(palabraActual.getimagePath(), 284, 279)));
         lblEspannol.setText("Español: " + palabraActual.getEspannol());
         lblMaleku.setText("Maleku: " + palabraActual.getMaleku());
     }//GEN-LAST:event_btnDerechaActionPerformed
@@ -295,7 +297,7 @@ public class Menu extends javax.swing.JFrame {
             btnIzquierda.setVisible(false);
         }
         Palabra palabraActual = juego.getPalabraActual();
-        lblImagen.setIcon(new ImageIcon(palabraActual.getImagen()));
+        lblImagen.setIcon(new ImageIcon(juego.recalcularImagen(palabraActual.getimagePath(), 284, 279)));
         lblEspannol.setText("Español: " + palabraActual.getEspannol());
         lblMaleku.setText("Maleku: " + palabraActual.getMaleku());
         

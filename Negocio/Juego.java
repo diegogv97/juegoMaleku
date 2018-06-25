@@ -15,25 +15,25 @@ public class Juego {
     private int indexPalabras = 0;
     
     
-    private Juego(){
+    public Juego(){
         try {
             
-            palabras.add(new Palabra("Abeja","Porróporr","Audios/prueba1.wav", recalcularImagen("Imagenes/abeja.png", 284, 279)));
-            palabras.add(new Palabra("Caballo","Cóyonh","Audios/prueba2.wav", recalcularImagen("Imagenes/caballo.png", 284, 279)));
-            palabras.add(new Palabra("Cocodrilo","Úju","Audios/prueba1.wav", recalcularImagen("Imagenes/cocodrilo.png", 284, 279)));
-            palabras.add(new Palabra("Cucaracha","Jáca","Audios/prueba2.wav", recalcularImagen("Imagenes/cucaracha.png", 284, 279)));
-            palabras.add(new Palabra("Gato","Tafáo/tafá óra","Audios/prueba1.wav", recalcularImagen("Imagenes/gato.png", 284, 279)));
-            palabras.add(new Palabra("Guacamaya","Óla","Audios/prueba2.wav", recalcularImagen("Imagenes/guacamaya.png", 284, 279)));
-            palabras.add(new Palabra("Hormiga","Ténanh","Audios/prueba1.wav", recalcularImagen("Imagenes/hormiga.png", 284, 279)));
-            palabras.add(new Palabra("Iguana","Errá","Audios/prueba2.wav", recalcularImagen("Imagenes/iguana.png", 284, 279)));
-            palabras.add(new Palabra("Jaguar","Yári","Audios/prueba1.wav", recalcularImagen("Imagenes/jaguar.png", 284, 279)));
-            palabras.add(new Palabra("Mapache","Tíu inhánhe","Audios/prueba2.wav", recalcularImagen("Imagenes/mapache.png", 284, 279)));
-            palabras.add(new Palabra("Mariposa","Fúfu","Audios/prueba1.wav", recalcularImagen("Imagenes/mariposa.png", 284, 279)));
-            palabras.add(new Palabra("Perezoso","Nharáchunh","Audios/prueba2.wav", recalcularImagen("Imagenes/perezoso.jpg", 284, 279)));
-            palabras.add(new Palabra("Perro","Aúsi","Audios/prueba1.wav", recalcularImagen("Imagenes/perro.png", 284, 279)));
-            palabras.add(new Palabra("Tortuga","Páparunh","Audios/prueba2.wav", recalcularImagen("Imagenes/tortuga.jpg", 284, 279)));
-            palabras.add(new Palabra("Zorrillo","Támerréja","Audios/prueba1.wav", recalcularImagen("Imagenes/zorrillo.png", 284, 279)));
-           
+            palabras.add(new Palabra("Abeja","Porróporr","Audios/prueba1.wav", "Imagenes/abeja.png"));
+            palabras.add(new Palabra("Caballo","Cóyonh","Audios/prueba2.wav", "Imagenes/caballo.png"));
+            palabras.add(new Palabra("Cocodrilo","Úju","Audios/prueba1.wav", "Imagenes/cocodrilo.png"));
+            palabras.add(new Palabra("Cucaracha","Jáca","Audios/prueba2.wav", "Imagenes/cucaracha.png"));
+            palabras.add(new Palabra("Gato","Tafáo/tafá óra","Audios/prueba1.wav", "Imagenes/gato.png"));
+            palabras.add(new Palabra("Guacamaya","Óla","Audios/prueba2.wav", "Imagenes/guacamaya.png"));
+            palabras.add(new Palabra("Hormiga","Ténanh","Audios/prueba1.wav", "Imagenes/hormiga.png"));
+            palabras.add(new Palabra("Iguana","Errá","Audios/prueba2.wav", "Imagenes/iguana.png"));
+            palabras.add(new Palabra("Jaguar","Yári","Audios/prueba1.wav", "Imagenes/jaguar.png"));
+            palabras.add(new Palabra("Mapache","Tíu inhánhe","Audios/prueba2.wav", "Imagenes/mapache.png"));
+            palabras.add(new Palabra("Mariposa","Fúfu","Audios/prueba1.wav", "Imagenes/mariposa.png"));
+            palabras.add(new Palabra("Perezoso","Nharáchunh","Audios/prueba2.wav", "Imagenes/perezoso.jpg"));
+            palabras.add(new Palabra("Perro","Aúsi","Audios/prueba1.wav", "Imagenes/perro.png"));
+            palabras.add(new Palabra("Tortuga","Páparunh","Audios/prueba2.wav", "Imagenes/tortuga.jpg"));
+            palabras.add(new Palabra("Zorrillo","Támerréja","Audios/prueba1.wav", "Imagenes/zorrillo.png"));
+          
         } catch (Exception ex) {
             Logger.getLogger(Juego.class.getName()).log(Level.SEVERE, null, ex);
         }
