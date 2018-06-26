@@ -1,8 +1,10 @@
 package Negocio;
 
 import java.awt.Image;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -13,19 +15,32 @@ import javax.swing.ImageIcon;
 
 public class Palabra {
     private Clip audio;
-    private AudioInputStream audioInputStream;
+    private InputStream is;
     private String audioPath;
-    private Image imagen;
-
+    private String imagePath;
+    private String espannol;
+    private String maleku;
     
-    public Palabra(String audioPath, Image imagen)throws UnsupportedAudioFileException, IOException, LineUnavailableException{  
+    
+    public Palabra(String espannol, String maleku, String audioPath, String imagePath)throws UnsupportedAudioFileException, IOException, LineUnavailableException{  
+        this.espannol = espannol;
+        this.maleku = maleku;
         //para la imagen 
-        this.imagen = imagen;         
+        this.imagePath = imagePath;         
         //para el audio
+        
         this.audioPath = audioPath;
-        audioInputStream = AudioSystem.getAudioInputStream(new File(this.audioPath).getAbsoluteFile());
-        audio = AudioSystem.getClip();
-        audio.open(audioInputStream); 
+   
+        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream(audioPath);
+        try {
+          audio = AudioSystem.getClip();
+          AudioInputStream ais = AudioSystem.getAudioInputStream(new BufferedInputStream(inputStream));
+          audio.open(ais);
+        } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
+          System.err.println("ERROR: Playing sound has failed");
+          e.printStackTrace();
+        }
     }
     
     public void playAudio() throws UnsupportedAudioFileException, IOException,LineUnavailableException, InterruptedException{
@@ -37,15 +52,33 @@ public class Palabra {
         audio.close();
         
         //reinciar
-        audioInputStream = AudioSystem.getAudioInputStream(new File(audioPath).getAbsoluteFile());
-        audio.open(audioInputStream);
-        audio.setMicrosecondPosition(0);
+        
+        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream(audioPath);
+        try {
+          Clip clip = AudioSystem.getClip();
+          AudioInputStream ais = AudioSystem.getAudioInputStream(new BufferedInputStream(inputStream));
+          clip.open(ais);
+        } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
+          System.err.println("ERROR: Playing sound has failed");
+          e.printStackTrace();
+        }
+        
+        
     }
     
   
 
-    public Image getImagen() {
-        return imagen;
+    public String getimagePath() {
+        return imagePath;
+    }
+
+    public String getEspannol() {
+        return espannol;
+    }
+
+    public String getMaleku() {
+        return maleku;
     }
     
     
