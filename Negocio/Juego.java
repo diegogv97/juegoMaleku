@@ -77,7 +77,10 @@ public class Juego {
         return false;
     }
     
-    
+    public Palabra getRandomPalabra(){
+        int random = (int )(Math.random() * 14);
+        return palabras.get(random);
+    }
     
     public Image recalcularImagen(String imagePath, int width, int height){
         ClassLoader classLoader = getClass().getClassLoader();

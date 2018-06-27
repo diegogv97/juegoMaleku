@@ -3,8 +3,11 @@ package GUI;
 
 import Negocio.Juego;
 import Negocio.Palabra;
+import Negocio.cartasMemoria;
 import java.awt.Image;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sound.sampled.LineUnavailableException;
@@ -13,6 +16,12 @@ import javax.swing.ImageIcon;
 
 public class Menu extends javax.swing.JFrame {
     Juego juego;
+    Palabra volteadaP;
+    javax.swing.JLabel volteadaLbl;
+    boolean hayVolteada = false;
+    int acertadas = 0;
+    int falladas = 0;
+    static ArrayList<cartasMemoria> cartas;
     
     public Menu() {
         initComponents();
@@ -21,6 +30,34 @@ public class Menu extends javax.swing.JFrame {
         panelJuego.setVisible(false);
         panelResultados.setVisible(false);
         panelVocabulario.setVisible(false);
+        
+        cartas = new ArrayList<cartasMemoria>();
+        for(int i = 0; i<14; i++){
+            javax.swing.JLabel lbl = new javax.swing.JLabel();
+            //btn.setBorderPainted(false);
+            //btn.setContentAreaFilled(false);
+            //btn.setFocusPainted(false);
+            lbl.setToolTipText("Voltear carta");
+            Palabra p = obtenerPalabra(cartas);
+            //lbl.setIcon(new ImageIcon(juego.recalcularImagen(p.getimagePath(), 82, 83)));
+            lbl.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 1));
+            cartasMemoria n = new cartasMemoria(lbl,p);
+            cartas.add(n);
+
+            lbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                try {
+                    btnCartasMemoriaMouseClicked(evt,lbl, p);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            });
+            
+        }
+        
+        
+        
     }
 
     /**
@@ -220,13 +257,22 @@ public class Menu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnjuego_MenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnjuego_MenuActionPerformed
-        panelJuego.setVisible(false);
-        panelMenu.setVisible(true);
-    }//GEN-LAST:event_btnjuego_MenuActionPerformed
-
     private void btnJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnJugarActionPerformed
         panelMenu.setVisible(false);
+        int x = 25;
+        int y = 30;
+        for(cartasMemoria cm : cartas){
+                    cm.getLbl().setIcon(new ImageIcon(juego.recalcularImagen("Imagenes/signo_pregunta.png", 82, 83)));
+                    panelJuego.add(cm.getLbl(), new org.netbeans.lib.awtextra.AbsoluteConstraints(x, y, 82, 83));
+                    x+= 100;
+                    if(x == 525){
+                        x = 25;
+                        y+= 100;
+                    }
+                    cm.getLbl().setVisible(true);
+                    cm.getLbl().setText(cm.getPalabra().getEspannol());
+        }
+        
         panelJuego.setVisible(true);
     }//GEN-LAST:event_btnJugarActionPerformed
 
@@ -239,6 +285,9 @@ public class Menu extends javax.swing.JFrame {
         panelMenu.setVisible(false);
         panelVocabulario.setVisible(true);
         
+        btnIzquierda.setVisible(true);
+        btnDerecha.setVisible(true);
+        btnAudio.setVisible(true);
         btnIzquierda.setIcon(new ImageIcon(juego.recalcularImagen("Imagenes/flecha_izq.png", 85, 61)));
         btnDerecha.setIcon(new ImageIcon(juego.recalcularImagen("Imagenes/flecha_der.png", 85, 61)));
         btnAudio.setIcon(new ImageIcon(juego.recalcularImagen("Imagenes/audio.png", 65, 65)));
@@ -303,6 +352,22 @@ public class Menu extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnIzquierdaActionPerformed
 
+    private void btnjuego_MenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnjuego_MenuActionPerformed
+        panelJuego.setVisible(false);
+        panelMenu.setVisible(true);
+    }//GEN-LAST:event_btnjuego_MenuActionPerformed
+    
+    private void btnCartasMemoriaMouseClicked(java.awt.event.MouseEvent evt, javax.swing.JLabel lbl, Palabra p) throws InterruptedException {                                              
+         lbl.setIcon(new ImageIcon(juego.recalcularImagen(p.getimagePath(), 82, 84)));
+         if(!hayVolteada){
+             volteadaLbl = lbl;
+             volteadaP = p;
+         }
+         else{
+             TimeUnit.SECONDS.sleep(1);
+             
+         }
+    }
     /**
      * @param args the command line arguments
      */
@@ -310,10 +375,29 @@ public class Menu extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Menu().setVisible(true);
-
             }
         });
     }
+    
+    
+    private Palabra obtenerPalabra(ArrayList<cartasMemoria> cartas){
+        Palabra temp = juego.getRandomPalabra();
+        boolean existe = false;
+        while(true){
+            for (cartasMemoria cm : cartas){
+                if (cm.getPalabra().getEspannol().equals(temp.getEspannol())){
+                    temp = juego.getRandomPalabra();
+                    existe = true;
+                    break;
+                }
+            }
+            if(!existe)
+                return temp;
+            existe = false;
+        }
+    }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAudio;
