@@ -77,7 +77,10 @@ public class Juego {
         return false;
     }
     
-    
+    public Palabra getRandomPalabra(){
+        int random = (int )(Math.random() * 14);
+        return palabras.get(random);
+    }
     
     public Image recalcularImagen(String imagePath, int width, int height){
         ClassLoader classLoader = getClass().getClassLoader();
@@ -86,6 +89,16 @@ public class Juego {
         return newimg;
     }
     
+    public boolean sonIguales(Palabra p1, Palabra p2){
+        if(p1.getEspannol().equals(p2.getEspannol())){
+            if(p1.getMaleku().equals(p2.getMaleku())){
+                if(p1.getimagePath().equals(p2.getimagePath())){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     
     
 }
