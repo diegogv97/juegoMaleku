@@ -4,6 +4,7 @@ package GUI;
 import Negocio.Juego;
 import Negocio.Palabra;
 import Negocio.cartasMemoria;
+import Negocio.relojThread;
 import java.awt.Image;
 import java.awt.event.MouseListener;
 import java.io.IOException;
@@ -18,7 +19,10 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 import javax.swing.SwingWorker;
 
+
 public class Menu extends javax.swing.JFrame {
+    static final int SEGUNDOS_TOTALES = 300;
+    
     Juego juego;
     Palabra volteadaP;
     Palabra volteada2P;
@@ -98,6 +102,7 @@ public class Menu extends javax.swing.JFrame {
         lblLogo = new javax.swing.JLabel();
         panelJuego = new javax.swing.JPanel();
         btnjuego_Menu = new javax.swing.JButton();
+        lblTiempo = new javax.swing.JLabel();
         panelVocabulario = new javax.swing.JPanel();
         btnVoca_menu = new javax.swing.JButton();
         lblImagen = new javax.swing.JLabel();
@@ -169,6 +174,9 @@ public class Menu extends javax.swing.JFrame {
             }
         });
         panelJuego.add(btnjuego_Menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 277, 75, 35));
+
+        lblTiempo.setFont(new java.awt.Font("Palatino Linotype", 0, 24)); // NOI18N
+        panelJuego.add(lblTiempo, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 250, -1, -1));
 
         getContentPane().add(panelJuego, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 534, 333));
 
@@ -295,8 +303,30 @@ public class Menu extends javax.swing.JFrame {
                     cm.getLbl().setVisible(true);
                     cm.getLbl().setText(cm.getPalabra().getEspannol());
         }
-        
+        relojThread reloj = new relojThread(SEGUNDOS_TOTALES, lblTiempo);
+        reloj.start();
         panelJuego.setVisible(true);
+        
+        
+        
+        SwingWorker<Boolean, Void> sw = new SwingWorker<Boolean, Void>(){
+                @Override
+                protected Boolean doInBackground() throws InterruptedException{
+                    
+                    while(reloj.getSegundos() >= 0){;}
+                    Thread.sleep(1000);
+                    reiniciarJuego();
+                    return true;
+                }
+
+                @Override
+                protected void done(){   
+                }
+             };
+             
+        sw.execute();
+             
+             
     }//GEN-LAST:event_btnJugarActionPerformed
 
     private void btnVoca_menuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoca_menuActionPerformed
@@ -398,7 +428,6 @@ public class Menu extends javax.swing.JFrame {
              SwingWorker<Boolean, Void> sw = new SwingWorker<Boolean, Void>(){
                 @Override
                 protected Boolean doInBackground() throws InterruptedException{
-                    TimeUnit.MILLISECONDS.sleep(400);
                     hayVolteada = false;
                     if(juego.sonIguales(volteada2P, volteadaP)){
                         acertadas++;
@@ -426,6 +455,7 @@ public class Menu extends javax.swing.JFrame {
                        if(!this.get()){
                            volteada2Lbl.setIcon(new ImageIcon(juego.recalcularImagen("Imagenes/signo_pregunta.png", 82, 83)));
                            volteadaLbl.setIcon(new ImageIcon(juego.recalcularImagen("Imagenes/signo_pregunta.png", 82, 83)));
+                           TimeUnit.MILLISECONDS.sleep(400);
                        }
                        else{
                        }
@@ -524,6 +554,24 @@ public class Menu extends javax.swing.JFrame {
                     cm.getLbl().setText(cm.getPalabra().getEspannol());
                     cm.getLbl().setFocusable(true);
         }
+        relojThread reloj = new relojThread(SEGUNDOS_TOTALES, lblTiempo);
+        reloj.start();
+        SwingWorker<Boolean, Void> sw = new SwingWorker<Boolean, Void>(){
+                @Override
+                protected Boolean doInBackground() throws InterruptedException{
+                    
+                    while(reloj.getSegundos() >= 0){;}
+                    Thread.sleep(1000);
+                    reiniciarJuego();
+                    return true;
+                }
+
+                @Override
+                protected void done(){   
+                }
+             };
+             
+        sw.execute();
         
         
     }
@@ -548,6 +596,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JLabel lblLogo;
     private javax.swing.JLabel lblMaleku;
     private javax.swing.JLabel lblParejasCorrectas;
+    private javax.swing.JLabel lblTiempo;
     private javax.swing.JPanel panelJuego;
     private javax.swing.JPanel panelMenu;
     private javax.swing.JPanel panelResultados;
