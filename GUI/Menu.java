@@ -23,6 +23,7 @@ public class Menu extends javax.swing.JFrame {
     Palabra volteadaP;
     Palabra volteada2P;
     javax.swing.JLabel volteadaLbl;
+    MouseListener volteadaLblListener;
     javax.swing.JLabel volteada2Lbl;
     boolean hayVolteada = false;
     int acertadas = 0;
@@ -385,73 +386,59 @@ public class Menu extends javax.swing.JFrame {
              volteadaLbl = lbl;
              volteadaP = p;
              hayVolteada = true;
+             for( MouseListener ml : lbl.getMouseListeners() ) {
+                lbl.removeMouseListener(ml);
+                volteadaLblListener = ml;
+            }
          }
          else{
              volteada2P = p;
              volteada2Lbl = lbl;
              
              SwingWorker<Boolean, Void> sw = new SwingWorker<Boolean, Void>(){
-
-            @Override
-            protected Boolean doInBackground() throws InterruptedException{
-                 //volteada2Lbl.setIcon(new ImageIcon(juego.recalcularImagen(volteada2P.getimagePath(), 82, 84)));
-                 TimeUnit.MILLISECONDS.sleep(800);
-                 hayVolteada = false;
-                 if(juego.sonIguales(volteada2P, volteadaP)){
-                     acertadas++;
-                     if(acertadas == 14/2){
-                         System.out.println("Acertadas: " + acertadas +"   Falladas: " + falladas);
-                         reiniciarJuego();
-                         return true;
-                     }
-                 }
-                 else{
-                     falladas++;
-                     return false;
-                 }
-                 return true;
-            }
-
-            @Override
-            protected void done()
-            {   try {
-                if(!this.get()){
-                    volteada2Lbl.setIcon(new ImageIcon(juego.recalcularImagen("Imagenes/signo_pregunta.png", 82, 83)));
-                    volteadaLbl.setIcon(new ImageIcon(juego.recalcularImagen("Imagenes/signo_pregunta.png", 82, 83)));
-                }
-                else{
+                @Override
+                protected Boolean doInBackground() throws InterruptedException{
+                    TimeUnit.MILLISECONDS.sleep(400);
+                    hayVolteada = false;
+                    if(juego.sonIguales(volteada2P, volteadaP)){
+                        acertadas++;
+                        for( MouseListener ml : volteada2Lbl.getMouseListeners() ) {
+                            volteada2Lbl.removeMouseListener(ml);
+                        }
+                        if(acertadas == 14/2){
+                            System.out.println("Acertadas: " + acertadas +"   Falladas: " + falladas);
+                            reiniciarJuego();
+                            return true;
+                        }
+                    }
+                    
+                    else{
+                        volteadaLbl.addMouseListener(volteadaLblListener);
+                        falladas++;
+                        return false;
+                    }
+                    return true;
                 }
 
+                @Override
+                protected void done(){   
+                    try {
+                       if(!this.get()){
+                           volteada2Lbl.setIcon(new ImageIcon(juego.recalcularImagen("Imagenes/signo_pregunta.png", 82, 83)));
+                           volteadaLbl.setIcon(new ImageIcon(juego.recalcularImagen("Imagenes/signo_pregunta.png", 82, 83)));
+                       }
+                       else{
+                       }
+                   }catch (InterruptedException ex) {
+                       System.out.println("error");
+                   }catch (ExecutionException ex) {
+                       System.out.println("error");
+                   }
 
-                } catch (InterruptedException ex) {
-                    System.out.println("error");
-                } catch (ExecutionException ex) {
-                    System.out.println("error");
-                }
-
-            }
-            };
+               }
+             };
              
              sw.execute();
-             //TimeUnit.SECONDS.sleep(2);
-             /*
-             hayVolteada = false;
-             if(juego.sonIguales(p, volteadaP)){
-                 acertadas++;
-                 if(acertadas == 14/2){
-                     System.out.println("Acertadas: " + acertadas +"   Falladas: " + falladas);
-                     reiniciarJuego();
-                     btnJugar.doClick();
-                     
-                 }
-             }
-             else{
-                 falladas++;
-                 lbl.setIcon(new ImageIcon(juego.recalcularImagen("Imagenes/signo_pregunta.png", 82, 83)));
-                 volteada2Lbl = lbl;
-                 volteadaLbl.setIcon(new ImageIcon(juego.recalcularImagen("Imagenes/signo_pregunta.png", 82, 83)));
-             }
-             */
          }
     }
     
@@ -535,6 +522,7 @@ public class Menu extends javax.swing.JFrame {
                     cm.getLbl().setIcon(new ImageIcon(juego.recalcularImagen("Imagenes/signo_pregunta.png", 82, 83)));
                     cm.getLbl().setVisible(true);
                     cm.getLbl().setText(cm.getPalabra().getEspannol());
+                    cm.getLbl().setFocusable(true);
         }
         
         
