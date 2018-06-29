@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 public class cartasMemoria {
     private javax.swing.JLabel lbl;
     private Palabra palabra;
+    private boolean isTexto;
 
     public javax.swing.JLabel getLbl() {
         return lbl;
@@ -25,9 +26,14 @@ public class cartasMemoria {
         this.palabra = palabra;
     }
 
-    public cartasMemoria(javax.swing.JLabel lbl, Palabra palabra) {
+    public boolean isIsTexto() {
+        return isTexto;
+    }
+
+    public cartasMemoria(javax.swing.JLabel lbl, Palabra palabra, boolean isTexto) {
         this.lbl = lbl;
         this.palabra = palabra;
+        this.isTexto = isTexto;
     }
     
 }

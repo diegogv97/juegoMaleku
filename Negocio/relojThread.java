@@ -47,7 +47,7 @@ public class relojThread extends Thread {
                 minutos = segundos / 60;
             }
              segundos = -1;
-             Thread.sleep(60000);
+             Thread.sleep(1);
         } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
         }

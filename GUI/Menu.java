@@ -21,7 +21,7 @@ import javax.swing.SwingWorker;
 
 
 public class Menu extends javax.swing.JFrame {
-    static final int SEGUNDOS_TOTALES = 300;
+    static final int SEGUNDOS_TOTALES = 90;
     
     Juego juego;
     Palabra volteadaP;
@@ -46,25 +46,24 @@ public class Menu extends javax.swing.JFrame {
         for(int i = 0; i<14/2; i++){
             javax.swing.JLabel lbl = new javax.swing.JLabel();
             javax.swing.JLabel lbl2 = new javax.swing.JLabel();
-            //btn.setBorderPainted(false);
-            //btn.setContentAreaFilled(false);
-            //btn.setFocusPainted(false);
-            lbl.setToolTipText("Voltear carta");
-            lbl2.setToolTipText("Voltear carta");
             
             Palabra p = obtenerPalabra(cartas);
-            //lbl.setIcon(new ImageIcon(juego.recalcularImagen(p.getimagePath(), 82, 83)));
             lbl.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 1));
             lbl2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 1));
-            cartasMemoria n = new cartasMemoria(lbl,p);
-            cartasMemoria n2 = new cartasMemoria(lbl2,p);
+            lbl.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+            lbl2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+            lbl.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            lbl2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            
+            cartasMemoria n = new cartasMemoria(lbl,p, true);
+            cartasMemoria n2 = new cartasMemoria(lbl2,p, false);
             cartas.add(n);
             cartas.add(n2);
             Collections.shuffle(cartas);
             lbl.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 try {
-                    btnCartasMemoriaMouseClicked(evt,lbl, p);
+                    btnCartasMemoriaMouseClicked(evt,lbl, p, true);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -74,7 +73,7 @@ public class Menu extends javax.swing.JFrame {
             lbl2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 try {
-                    btnCartasMemoriaMouseClicked(evt,lbl2, p);
+                    btnCartasMemoriaMouseClicked(evt,lbl2, p, false);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -118,7 +117,7 @@ public class Menu extends javax.swing.JFrame {
         lblParejasCorrectas = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Juego de Maleku");
+        setTitle("Juego de Malecu");
         setLocation(new java.awt.Point(0, 0));
         setMaximumSize(new java.awt.Dimension(534, 373));
         setMinimumSize(new java.awt.Dimension(534, 373));
@@ -301,7 +300,6 @@ public class Menu extends javax.swing.JFrame {
                         y+= 100;
                     }
                     cm.getLbl().setVisible(true);
-                    cm.getLbl().setText(cm.getPalabra().getEspannol());
         }
         relojThread reloj = new relojThread(SEGUNDOS_TOTALES, lblTiempo);
         reloj.start();
@@ -313,9 +311,14 @@ public class Menu extends javax.swing.JFrame {
                 @Override
                 protected Boolean doInBackground() throws InterruptedException{
                     
-                    while(reloj.getSegundos() >= 0){;}
-                    Thread.sleep(1000);
-                    reiniciarJuego();
+                    while(reloj.getSegundos() >= 0){Thread.sleep(500);}
+                    Thread.sleep(500);
+                    lblParejasCorrectas.setText("Parejas correctas: " + String.valueOf(acertadas));
+                    lblIntentosFallidos.setText("Intentos fallidos: " + String.valueOf(falladas));
+                    if(panelJuego.isVisible()){
+                        panelJuego.setVisible(false);
+                        panelResultados.setVisible(true);
+                    }
                     return true;
                 }
 
@@ -351,12 +354,13 @@ public class Menu extends javax.swing.JFrame {
         Palabra palabraActual = juego.getPalabraActual();
         lblImagen.setIcon(new ImageIcon(juego.recalcularImagen(palabraActual.getimagePath(), 284, 279)));
         lblEspannol.setText("Español: " + palabraActual.getEspannol());
-        lblMaleku.setText("Maleku: " + palabraActual.getMaleku());
+        lblMaleku.setText("Malecu: " + palabraActual.getMaleku());
         
     }//GEN-LAST:event_btnVocabularioActionPerformed
 
     private void btnRetryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetryActionPerformed
         panelResultados.setVisible(false);
+        reiniciarJuego();
         panelJuego.setVisible(true);
     }//GEN-LAST:event_btnRetryActionPerformed
 
@@ -389,7 +393,7 @@ public class Menu extends javax.swing.JFrame {
         Palabra palabraActual = juego.getPalabraActual();
         lblImagen.setIcon(new ImageIcon(juego.recalcularImagen(palabraActual.getimagePath(), 284, 279)));
         lblEspannol.setText("Español: " + palabraActual.getEspannol());
-        lblMaleku.setText("Maleku: " + palabraActual.getMaleku());
+        lblMaleku.setText("Malecu: " + palabraActual.getMaleku());
     }//GEN-LAST:event_btnDerechaActionPerformed
 
     private void btnIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzquierdaActionPerformed
@@ -401,7 +405,7 @@ public class Menu extends javax.swing.JFrame {
         Palabra palabraActual = juego.getPalabraActual();
         lblImagen.setIcon(new ImageIcon(juego.recalcularImagen(palabraActual.getimagePath(), 284, 279)));
         lblEspannol.setText("Español: " + palabraActual.getEspannol());
-        lblMaleku.setText("Maleku: " + palabraActual.getMaleku());
+        lblMaleku.setText("Malecu: " + palabraActual.getMaleku());
         
     }//GEN-LAST:event_btnIzquierdaActionPerformed
 
@@ -410,9 +414,15 @@ public class Menu extends javax.swing.JFrame {
         panelMenu.setVisible(true);
     }//GEN-LAST:event_btnjuego_MenuActionPerformed
     
-    private void btnCartasMemoriaMouseClicked(java.awt.event.MouseEvent evt, javax.swing.JLabel lbl, Palabra p) throws InterruptedException {                                              
-         lbl.setIcon(new ImageIcon(juego.recalcularImagen(p.getimagePath(), 82, 84)));
-         if(!hayVolteada){
+    private void btnCartasMemoriaMouseClicked(java.awt.event.MouseEvent evt, javax.swing.JLabel lbl, Palabra p, boolean isTexto) throws InterruptedException {                                              
+        if(!isTexto){
+            lbl.setIcon(new ImageIcon(juego.recalcularImagen(p.getimagePath(), 82, 84)));
+        }
+        else{
+            lbl.setIcon(null);
+            lbl.setText(p.getEspannol());
+        }
+        if(!hayVolteada){
              volteadaLbl = lbl;
              volteadaP = p;
              hayVolteada = true;
@@ -455,6 +465,8 @@ public class Menu extends javax.swing.JFrame {
                        if(!this.get()){
                            volteada2Lbl.setIcon(new ImageIcon(juego.recalcularImagen("Imagenes/signo_pregunta.png", 82, 83)));
                            volteadaLbl.setIcon(new ImageIcon(juego.recalcularImagen("Imagenes/signo_pregunta.png", 82, 83)));
+                           volteada2Lbl.setText("");
+                           volteadaLbl.setText("");
                            TimeUnit.MILLISECONDS.sleep(400);
                        }
                        else{
@@ -528,7 +540,7 @@ public class Menu extends javax.swing.JFrame {
             lbl1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 try {
-                    btnCartasMemoriaMouseClicked(evt,lbl1, p);
+                    btnCartasMemoriaMouseClicked(evt,lbl1, p, true);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -538,7 +550,7 @@ public class Menu extends javax.swing.JFrame {
             lbl2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 try {
-                    btnCartasMemoriaMouseClicked(evt,lbl2, p);
+                    btnCartasMemoriaMouseClicked(evt,lbl2, p, false);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -551,7 +563,7 @@ public class Menu extends javax.swing.JFrame {
         for(cartasMemoria cm : cartas){
                     cm.getLbl().setIcon(new ImageIcon(juego.recalcularImagen("Imagenes/signo_pregunta.png", 82, 83)));
                     cm.getLbl().setVisible(true);
-                    cm.getLbl().setText(cm.getPalabra().getEspannol());
+                    cm.getLbl().setText("");
                     cm.getLbl().setFocusable(true);
         }
         relojThread reloj = new relojThread(SEGUNDOS_TOTALES, lblTiempo);
@@ -560,9 +572,13 @@ public class Menu extends javax.swing.JFrame {
                 @Override
                 protected Boolean doInBackground() throws InterruptedException{
                     
-                    while(reloj.getSegundos() >= 0){;}
-                    Thread.sleep(1000);
-                    reiniciarJuego();
+                    while(reloj.getSegundos() >= 0){Thread.sleep(500);}
+                    lblParejasCorrectas.setText("Parejas correctas: " + String.valueOf(acertadas));
+                    lblIntentosFallidos.setText("Intentos fallidos: " + String.valueOf(falladas));
+                    if(panelJuego.isVisible()){
+                        panelJuego.setVisible(false);
+                        panelResultados.setVisible(true);
+                    }
                     return true;
                 }
 
