@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.SwingWorker;
 
 
@@ -32,6 +33,7 @@ public class Menu extends javax.swing.JFrame {
     boolean hayVolteada = false;
     int acertadas = 0;
     int falladas = 0;
+    relojThread reloj;
     static ArrayList<cartasMemoria> cartas;
     
     public Menu() {
@@ -41,9 +43,10 @@ public class Menu extends javax.swing.JFrame {
         panelJuego.setVisible(false);
         panelResultados.setVisible(false);
         panelVocabulario.setVisible(false);
-        
+        lblLogo.setIcon(new ImageIcon(juego.recalcularImagen("Imagenes/logo.png", 450, 228)));
+        this.setIconImage(juego.recalcularImagen("Imagenes/img_miniatura.png", 50, 50));
         cartas = new ArrayList<cartasMemoria>();
-        for(int i = 0; i<14/2; i++){
+        for(int i = 0; i<7; i++){
             javax.swing.JLabel lbl = new javax.swing.JLabel();
             javax.swing.JLabel lbl2 = new javax.swing.JLabel();
             
@@ -117,7 +120,7 @@ public class Menu extends javax.swing.JFrame {
         lblParejasCorrectas = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Juego de Malecu");
+        setTitle("Orróqui maráma");
         setLocation(new java.awt.Point(0, 0));
         setMaximumSize(new java.awt.Dimension(534, 373));
         setMinimumSize(new java.awt.Dimension(534, 373));
@@ -137,7 +140,7 @@ public class Menu extends javax.swing.JFrame {
                 btnJugarActionPerformed(evt);
             }
         });
-        panelMenu.add(btnJugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(297, 257, 120, 47));
+        panelMenu.add(btnJugar, new org.netbeans.lib.awtextra.AbsoluteConstraints(297, 265, 120, 47));
 
         btnVocabulario.setText("Vocabulario");
         btnVocabulario.addActionListener(new java.awt.event.ActionListener() {
@@ -145,19 +148,18 @@ public class Menu extends javax.swing.JFrame {
                 btnVocabularioActionPerformed(evt);
             }
         });
-        panelMenu.add(btnVocabulario, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 257, 154, 47));
+        panelMenu.add(btnVocabulario, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 265, 154, 47));
 
         lblLogo.setBackground(new java.awt.Color(255, 255, 255));
         lblLogo.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         lblLogo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblLogo.setText("imagen de logo");
         lblLogo.setAlignmentX(234.0F);
         lblLogo.setAlignmentY(237.0F);
-        lblLogo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
-        lblLogo.setMaximumSize(new java.awt.Dimension(405, 183));
-        lblLogo.setMinimumSize(new java.awt.Dimension(405, 183));
+        lblLogo.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+        lblLogo.setMaximumSize(new java.awt.Dimension(450, 228));
+        lblLogo.setMinimumSize(new java.awt.Dimension(450, 228));
         lblLogo.setPreferredSize(new java.awt.Dimension(405, 183));
-        panelMenu.add(lblLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(64, 38, -1, -1));
+        panelMenu.add(lblLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 450, 228));
 
         getContentPane().add(panelMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 534, 333));
 
@@ -301,7 +303,7 @@ public class Menu extends javax.swing.JFrame {
                     }
                     cm.getLbl().setVisible(true);
         }
-        relojThread reloj = new relojThread(SEGUNDOS_TOTALES, lblTiempo);
+        reloj = new relojThread(SEGUNDOS_TOTALES, lblTiempo);
         reloj.start();
         panelJuego.setVisible(true);
         
@@ -420,7 +422,11 @@ public class Menu extends javax.swing.JFrame {
         }
         else{
             lbl.setIcon(null);
-            lbl.setText(p.getEspannol());
+            String textoMaleku = p.getMaleku();
+            if(textoMaleku.length() > 9){
+                lbl.setFont(new java.awt.Font("Tahoma", 0, 13));
+            }
+            lbl.setText(textoMaleku);
         }
         if(!hayVolteada){
              volteadaLbl = lbl;
@@ -444,9 +450,14 @@ public class Menu extends javax.swing.JFrame {
                         for( MouseListener ml : volteada2Lbl.getMouseListeners() ) {
                             volteada2Lbl.removeMouseListener(ml);
                         }
-                        if(acertadas == 14/2){
-                            System.out.println("Acertadas: " + acertadas +"   Falladas: " + falladas);
-                            reiniciarJuego();
+                        if(acertadas == 7){
+                            reloj.interrupt();
+                            lblParejasCorrectas.setText("Parejas correctas: " + String.valueOf(acertadas));
+                            lblIntentosFallidos.setText("Intentos fallidos: " + String.valueOf(falladas));
+                            if(panelJuego.isVisible()){
+                                panelJuego.setVisible(false);
+                                panelResultados.setVisible(true);
+                            }
                             return true;
                         }
                     }
@@ -556,6 +567,8 @@ public class Menu extends javax.swing.JFrame {
                 }
             }
             });
+            lbl1.setFont(new java.awt.Font("Tahoma", 0, 18));
+            lbl2.setFont(new java.awt.Font("Tahoma", 0, 18));
             cartas.set(i-2, cm1); cartas.set(i-1, cm2);
         }
         Collections.shuffle(cartas);
@@ -566,7 +579,7 @@ public class Menu extends javax.swing.JFrame {
                     cm.getLbl().setText("");
                     cm.getLbl().setFocusable(true);
         }
-        relojThread reloj = new relojThread(SEGUNDOS_TOTALES, lblTiempo);
+        reloj = new relojThread(SEGUNDOS_TOTALES, lblTiempo);
         reloj.start();
         SwingWorker<Boolean, Void> sw = new SwingWorker<Boolean, Void>(){
                 @Override
