@@ -367,6 +367,9 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRetryActionPerformed
 
     private void btnResults_MenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResults_MenuActionPerformed
+        reloj.interrupt();
+        reiniciarJuego();
+        reloj.interrupt();
         panelResultados.setVisible(false);
         panelMenu.setVisible(true);
     }//GEN-LAST:event_btnResults_MenuActionPerformed
@@ -412,6 +415,9 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnIzquierdaActionPerformed
 
     private void btnjuego_MenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnjuego_MenuActionPerformed
+        reloj.interrupt();
+        reiniciarJuego();
+        reloj.interrupt();
         panelJuego.setVisible(false);
         panelMenu.setVisible(true);
     }//GEN-LAST:event_btnjuego_MenuActionPerformed
