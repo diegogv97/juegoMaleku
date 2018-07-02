@@ -56,9 +56,9 @@ public class Palabra {
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream(audioPath);
         try {
-          Clip clip = AudioSystem.getClip();
+          audio = AudioSystem.getClip();
           AudioInputStream ais = AudioSystem.getAudioInputStream(new BufferedInputStream(inputStream));
-          clip.open(ais);
+          audio.open(ais);
         } catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
           System.err.println("ERROR: Playing sound has failed");
           e.printStackTrace();
